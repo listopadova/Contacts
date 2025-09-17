@@ -2,7 +2,6 @@ package com.example.contacts
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -36,7 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.motionEventSpy
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.contacts.ui.theme.ContactsTheme
@@ -75,7 +73,7 @@ fun AddNewContact(modifier: Modifier = Modifier, onAddContactClick: () -> Unit) 
             containerColor = MaterialTheme.colorScheme.surface,
         ),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .fillMaxWidth()
 
@@ -83,18 +81,18 @@ fun AddNewContact(modifier: Modifier = Modifier, onAddContactClick: () -> Unit) 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            "Add new contact",
+            stringResource(R.string.add_contact__title),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        TextInput("Enter contact name")
-        TextInput("Enter contact surname")
-        TextInput("Enter contact number")
+        TextInput(stringResource(R.string.add_contact__text_field_label__name))
+        TextInput(stringResource(R.string.add_contact__text_field_label__surname))
+        TextInput(stringResource(R.string.add_contact__text_field_label__phone))
 
         StyledButton(
             onClick = onAddContactClick,
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "Add new contact"
+            text = stringResource(R.string.add_contact__button_title)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -176,7 +174,7 @@ fun Contact(contact: Contact) {
 
         StyledButton(
             onClick = {  },
-            text = "Delete"
+            text = stringResource(R.string.delete_contact_button_title)
         )
     }
 }

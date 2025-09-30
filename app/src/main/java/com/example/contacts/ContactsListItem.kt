@@ -21,7 +21,7 @@ private val contactIconSize = 48.dp
 private val padding = 8.dp
 
 @Composable
-fun Contact(contact: Contact) {
+fun ContactsListItem(uiState: ContactsListItemState, onDeleteClick: () -> Unit) {
     Row(Modifier
         .fillMaxWidth()
         .padding(padding),
@@ -34,21 +34,21 @@ fun Contact(contact: Contact) {
                 .size(contactIconSize)
         ) {
             Box(contentAlignment = Alignment.Center) {
-                Text((contact.name.take(1) + contact.surname.take(1)).uppercase())
+                Text(uiState.initials)
             }
         }
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.padding(horizontal = padding)
         ) {
-            Text(contact.name + " " + contact.surname)
-            Text(contact.phone)
+            Text(uiState.fullName)
+            Text(uiState.phone)
         }
 
         Spacer(Modifier.weight(1F))
 
         StyledButton(
-            onClick = {  },
+            onClick = onDeleteClick,
             text = stringResource(R.string.delete_contact_button_title)
         )
     }

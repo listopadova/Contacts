@@ -27,8 +27,8 @@ private val spacerHeight = 16.dp
 
 @Composable
 fun AddNewContact(
-    viewModel: AddNewContactViewModel = viewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -50,9 +50,10 @@ fun AddNewContact(
         )
 
         TextInput(
-            label = stringResource(id = R.string.add_contact__text_field_label__name),
+            label = stringResource(R.string.add_contact__text_field_label__name),
             text = uiState.name,
-            updateValue = viewModel::updateName)
+            updateValue = viewModel::updateName
+        )
         TextInput(
             label = stringResource(R.string.add_contact__text_field_label__surname),
             text = uiState.surname,

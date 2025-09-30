@@ -23,26 +23,55 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
     val uiState: StateFlow<AddNewContactState> = _uiState.asStateFlow()
 
     fun updateName(name: String) {
-        _uiState.update { it.copy(name = name) }
+        _uiState.update {
+            it.copy(
+                name = name,
+                isEmptyNameError = name.isEmpty()
+            )
+        }
     }
 
     fun updateSurname(surname: String) {
-        _uiState.update { it.copy(surname = surname) }
+        _uiState.update {
+            it.copy(
+                surname = surname,
+                isEmptySurnameError = surname.isEmpty()
+            )
+        }
     }
 
     fun updatePhone(phone: String) {
-        _uiState.update { it.copy(phone = phone) }
-    }
-    fun addContact() {
-        val value = _uiState.value
-        repository.addContact(value.name, value.surname, value.phone)
-
         _uiState.update {
             it.copy(
-                name = "",
-                surname = "",
-                phone = ""
+                phone = phone,
+                isEmptyPhoneError = phone.isEmpty()
             )
+        }
+    }
+    fun addContact() {
+        _uiState.update {
+            it.copy(
+                isEmptyNameError = it.name.isEmpty(),
+                isEmptySurnameError = it.surname.isEmpty(),
+                isEmptyPhoneError = it.phone.isEmpty()
+            )
+        }
+
+        if (!_uiState.value.isEmptyNameError &&
+            !_uiState.value.isEmptySurnameError &&
+            !_uiState.value.isEmptyPhoneError) {
+            repository.addContact(
+                _uiState.value.name,
+                _uiState.value.surname,
+                _uiState.value.phone)
+
+            _uiState.update {
+                it.copy(
+                    name = "",
+                    surname = "",
+                    phone = ""
+                )
+            }
         }
     }
 
@@ -51,6 +80,9 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
 data class AddNewContactState(
     val name: String = "",
     val surname: String = "",
-    val phone: String = ""
+    val phone: String = "",
+    val isEmptyNameError: Boolean = false,
+    val isEmptySurnameError: Boolean = false,
+    val isEmptyPhoneError: Boolean = false
 )
 

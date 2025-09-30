@@ -5,5 +5,8 @@
     <string name="add_contact__text_field_label__name">Name</string>
     <string name="add_contact__text_field_label__surname">Surname</string>
     <string name="add_contact__text_field_label__phone">Phone</string>
+    <string name="add_contact__text_field_label__empty_name_error">Name could not be empty</string>
+    <string name="add_contact__text_field_label__empty_surname_error">Surname could not be empty</string>
+    <string name="add_contact__text_field_label__empty_phone_error">Phone could not be empty</string>
     <string name="delete_contact_button_title">Delete</string>
 </resources>

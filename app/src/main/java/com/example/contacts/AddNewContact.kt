@@ -52,16 +52,25 @@ fun AddNewContact(
         TextInput(
             label = stringResource(R.string.add_contact__text_field_label__name),
             text = uiState.name,
+            supportingText = if (uiState.isEmptyNameError)
+                stringResource(R.string.add_contact__text_field_label__empty_name_error) else null,
+            isError = uiState.isEmptyNameError,
             updateValue = viewModel::updateName
         )
         TextInput(
             label = stringResource(R.string.add_contact__text_field_label__surname),
             text = uiState.surname,
+            supportingText = if (uiState.isEmptySurnameError)
+                stringResource(R.string.add_contact__text_field_label__empty_surname_error) else null,
+            isError = uiState.isEmptySurnameError,
             updateValue = viewModel::updateSurname
         )
         TextInput(
             label = stringResource(R.string.add_contact__text_field_label__phone),
             text = uiState.phone,
+            supportingText = if (uiState.isEmptyPhoneError)
+                stringResource(R.string.add_contact__text_field_label__empty_phone_error) else null,
+            isError = uiState.isEmptyPhoneError,
             updateValue = viewModel::updatePhone
         )
 

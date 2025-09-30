@@ -11,12 +11,21 @@ import androidx.compose.ui.unit.dp
 private val padding = 16.dp
 
 @Composable
-fun TextInput(modifier: Modifier = Modifier, label: String, text: String, updateValue: (String) -> Unit) {
+fun TextInput(
+    modifier: Modifier = Modifier,
+    label: String,
+    text: String,
+    supportingText: String? = null,
+    isError: Boolean = false,
+    updateValue: (String) -> Unit
+) {
     TextField(
         value = text,
         onValueChange = { updateValue(it) },
         label = { Text(label) },
         singleLine = true,
+        isError = isError,
+        supportingText = { supportingText?.let { Text(it) } },
         modifier = modifier
             .padding(padding)
             .fillMaxWidth(),

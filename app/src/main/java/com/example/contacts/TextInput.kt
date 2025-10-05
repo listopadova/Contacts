@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-private val padding = 16.dp
+private val padding = 6.dp
 
 @Composable
 fun TextInput(

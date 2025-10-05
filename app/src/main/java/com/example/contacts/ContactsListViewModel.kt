@@ -23,11 +23,15 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
 
     val uiState: StateFlow<ContactsListState> = repository.stateFlow.map { repositoryContactList ->
         val contactItems: List<ContactsListItemState> = repositoryContactList.asViewModelContacts()
-        ContactsListState(contactItems)
+        if (contactItems.isEmpty()) {
+            ContactsListState.Empty
+        } else {
+            ContactsListState.Items(contactItems)
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = ContactsListState()
+        initialValue = ContactsListState.Empty
     )
 
     private fun List<Contact>.asViewModelContacts(): List<ContactsListItemState> {
@@ -44,10 +48,10 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
         repository.deleteContact(item.id)
     }
 }
-
-data class ContactsListState(
-    val contactItems: List<ContactsListItemState> = listOf()
-)
+sealed class ContactsListState {
+    data object Empty: ContactsListState()
+    data class Items(val contactItems: List<ContactsListItemState>): ContactsListState()
+}
 
 data class ContactsListItemState(
     val id: Int = -1,

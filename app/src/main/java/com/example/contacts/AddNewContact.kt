@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ fun AddNewContact(
     viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val focusManager = LocalFocusManager.current
 
     OutlinedCard(
         colors = CardDefaults.cardColors(
@@ -75,7 +77,10 @@ fun AddNewContact(
         )
 
         StyledButton(
-            onClick = viewModel::addContact,
+            onClick = {
+                focusManager.clearFocus()
+                viewModel.addContact()
+            },
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = stringResource(R.string.add_contact__button_title)
         )

@@ -34,6 +34,10 @@ class ContactsRepository(
             }
         }
     }
+
+    fun getContact(id: Int): Contact? {
+        return localDataSource.getContact(id)
+    }
 }
 
 class LocalDataSource {

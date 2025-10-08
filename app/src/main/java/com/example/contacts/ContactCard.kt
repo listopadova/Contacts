@@ -18,15 +18,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 private val borderWidth = 1.dp
 private val cardPadding = 8.dp
-private val contactIconSize = 48.dp
+private val contactIconPadding = 12.dp
+private val contactIconSize = 80.dp
 @Composable
 fun ContactCard(
     modifier: Modifier = Modifier,
-    uiState: ContactsListItemState
+    viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel .Factory),
+    contactId: Int
 ) {
+    val contact = viewModel.getContact(contactId)
     OutlinedCard (
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -41,15 +45,16 @@ fun ContactCard(
                 color = Color.Blue,
                 contentColor = Color.White,
                 modifier = Modifier
+                    .padding(contactIconPadding)
                     .size(contactIconSize)
                     .align(Alignment.CenterHorizontally)
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(uiState.initials)
+                    Text(contact.initials)
                 }
             }
             Text(
-                uiState.fullName,
+                contact.fullName,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
     }
@@ -61,12 +66,5 @@ fun ContactCard(
     uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ContactCardPreview() {
-    ContactCard(
-        uiState = ContactsListItemState(
-            id = 1,
-            name = "Name",
-            surname = "Surname",
-            phone = "213123123"
-        )
-    )
+    ContactCard(contactId = 1)
 }

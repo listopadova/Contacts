@@ -3,6 +3,7 @@ package com.example.contacts
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,7 @@ private val cardPadding = 8.dp
 fun ContactsList(
     modifier: Modifier = Modifier,
     viewModel: ContactsListViewModel = viewModel(factory = ContactsListViewModel.Factory),
+    onNavigateToContactCard: (contact: Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -48,7 +50,10 @@ fun ContactsList(
             is ContactsListState.Items -> {
                 LazyColumn {
                     items(state.contactItems) { contact ->
-                        ContactsListItem(contact) {
+                        ContactsListItem(
+                            modifier = Modifier.clickable { onNavigateToContactCard(contact.id) },
+                            uiState = contact
+                        ) {
                             viewModel.delete(contact)
                         }
                     }
@@ -65,6 +70,8 @@ fun ContactsList(
 @Composable
 fun ContactsListPreview() {
     ContactsTheme {
-        ContactsList()
+        ContactsList(
+            onNavigateToContactCard = { }
+        )
     }
 }

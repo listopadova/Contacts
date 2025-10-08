@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import com.example.contacts.ui.theme.ContactsTheme
 
 @Composable
-fun ContactsScreen(modifier: Modifier = Modifier) {
+fun ContactsScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToContactCard: (contact: Int) -> Unit
+) {
     ContactsTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
@@ -17,7 +20,7 @@ fun ContactsScreen(modifier: Modifier = Modifier) {
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                ContactsList()
+                ContactsList(onNavigateToContactCard = onNavigateToContactCard)
                 AddNewContact()
             }
         }

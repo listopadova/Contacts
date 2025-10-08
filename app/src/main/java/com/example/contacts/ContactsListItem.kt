@@ -21,8 +21,12 @@ private val contactIconSize = 48.dp
 private val padding = 8.dp
 
 @Composable
-fun ContactsListItem(uiState: ContactsListItemState, onDeleteClick: () -> Unit) {
-    Row(Modifier
+fun ContactsListItem(
+    modifier: Modifier = Modifier,
+    uiState: ContactsListItemState,
+    onDeleteClick: () -> Unit
+) {
+    Row(modifier
         .fillMaxWidth()
         .padding(padding),
     ) {

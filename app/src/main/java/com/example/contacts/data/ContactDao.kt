@@ -1,21 +1,21 @@
 package com.example.contacts.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContactDao {
     @Query("SELECT * FROM contacts")
-    fun getAll(): List<ContactEntity>
+    fun getAll(): Flow<List<ContactEntity>>
     @Query("SELECT * FROM contacts WHERE id = :contactId")
-    fun getContact(contactId: Int): List<ContactEntity>
+    fun getContact(contactId: Int): Flow<ContactEntity>
     @Insert
     fun insertContact(contact: ContactEntity)
-    @Delete
-    fun deleteContact(contact: ContactEntity)
+    @Query("DELETE FROM contacts WHERE id = :contactId")
+    fun deleteContactById(contactId: Int)
     @Update
     fun updateContact(contact: ContactEntity)
 }

@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class ContactsListViewModel(private val repository: ContactsRepository): ViewModel() {
     companion object {
@@ -21,7 +23,7 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
         }
     }
 
-    val uiState: StateFlow<ContactsListState> = repository.stateFlow.map { repositoryContactList ->
+    val uiState: StateFlow<ContactsListState> = repository.flow.map { repositoryContactList ->
         val contactItems: List<ContactsListItemState> = repositoryContactList.asViewModelContacts()
         if (contactItems.isEmpty()) {
             ContactsListState.Empty
@@ -45,7 +47,9 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
     }
 
     fun delete(item: ContactsListItemState) {
-        repository.deleteContact(item.id)
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteContact(item.id)
+        }
     }
 }
 sealed class ContactsListState {

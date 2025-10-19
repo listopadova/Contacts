@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 private val borderWidth = 1.dp
@@ -30,7 +31,10 @@ fun ContactCard(
     viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel .Factory),
     contactId: Int
 ) {
-    val contact = viewModel.getContact(contactId)
+    // TODO: refactor it
+    val contact = viewModel.getContact(contactId).collectAsStateWithLifecycle(
+        initialValue = ContactsListItemState()
+    )
     OutlinedCard (
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -50,11 +54,11 @@ fun ContactCard(
                     .align(Alignment.CenterHorizontally)
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(contact.initials)
+                    Text(contact.value.initials)
                 }
             }
             Text(
-                contact.fullName,
+                contact.value.fullName,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
     }

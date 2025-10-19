@@ -3,12 +3,15 @@ package com.example.contacts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AddNewContactViewModel(private val repository: ContactsRepository): ViewModel() {
     companion object {
@@ -60,10 +63,14 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
         if (!_uiState.value.isEmptyNameError &&
             !_uiState.value.isEmptySurnameError &&
             !_uiState.value.isEmptyPhoneError) {
-            repository.addContact(
-                _uiState.value.name,
-                _uiState.value.surname,
-                _uiState.value.phone)
+            val contact = Contact (
+                name = _uiState.value.name,
+                surname = _uiState.value.surname,
+                phone = _uiState.value.phone
+            )
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.addContact(contact)
+            }
 
             _uiState.update {
                 it.copy(

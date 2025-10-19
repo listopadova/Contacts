@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ContactCardViewModel(private val repository: ContactsRepository): ViewModel() {
     companion object {
@@ -16,8 +18,8 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
         }
     }
 
-    fun getContact(id: Int): ContactsListItemState {
-        val contact = repository.getContact(id)?.let { contact ->
+    fun getContact(id: Int): Flow<ContactsListItemState> {
+        return repository.getContact(id).map { contact ->
             ContactsListItemState(
                 id = contact.id,
                 name = contact.name,
@@ -25,7 +27,6 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
                 phone = contact.phone
             )
         }
-        return contact ?: ContactsListItemState()
     }
 
 }

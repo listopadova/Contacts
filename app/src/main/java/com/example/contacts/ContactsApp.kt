@@ -14,6 +14,6 @@ class ContactsApp : Application() {
         ).build()
     }
     val repository: ContactsRepository by lazy {
-        ContactsRepository(LocalDataSource())
+        ContactsRepository(database.contactDao())
     }
 }

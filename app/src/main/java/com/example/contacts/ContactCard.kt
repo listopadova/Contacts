@@ -31,10 +31,7 @@ fun ContactCard(
     viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel .Factory),
     contactId: Int
 ) {
-    // TODO: refactor it
-    val contact = viewModel.getContact(contactId).collectAsStateWithLifecycle(
-        initialValue = ContactsListItemState()
-    )
+    val contact = viewModel.getContact(contactId).collectAsStateWithLifecycle()
     OutlinedCard (
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,

@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button

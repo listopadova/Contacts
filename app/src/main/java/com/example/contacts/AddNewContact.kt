@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -16,10 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.contacts.components.StyledButton
+import com.example.contacts.components.TextInput
 import com.example.contacts.ui.theme.ContactsTheme
 
 private val borderWidth = 1.dp
@@ -73,6 +77,7 @@ fun AddNewContact(
             supportingText = if (uiState.isEmptyPhoneError)
                 stringResource(R.string.add_contact__text_field_label__empty_phone_error) else null,
             isError = uiState.isEmptyPhoneError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             updateValue = viewModel::updatePhone
         )
 

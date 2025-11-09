@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.presentation.contactsList
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +21,6 @@ fun ContactsScreen(
                     .fillMaxSize()
             ) {
                 ContactsList(onNavigateToContactCard = onNavigateToContactCard)
-                AddNewContact()
             }
         }
     }

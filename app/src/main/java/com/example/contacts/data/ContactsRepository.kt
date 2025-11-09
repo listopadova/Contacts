@@ -1,8 +1,6 @@
-package com.example.contacts
+package com.example.contacts.data
 
 import androidx.core.util.ObjectsCompat
-import com.example.contacts.data.ContactDao
-import com.example.contacts.data.ContactEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

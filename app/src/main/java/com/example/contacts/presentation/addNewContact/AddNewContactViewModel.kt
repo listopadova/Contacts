@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.presentation.addNewContact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.contacts.ContactsApp
+import com.example.contacts.data.Contact
+import com.example.contacts.data.ContactsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,7 +66,7 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
         if (!_uiState.value.isEmptyNameError &&
             !_uiState.value.isEmptySurnameError &&
             !_uiState.value.isEmptyPhoneError) {
-            val contact = Contact (
+            val contact = Contact(
                 name = _uiState.value.name,
                 surname = _uiState.value.surname,
                 phone = _uiState.value.phone

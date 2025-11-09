@@ -3,6 +3,7 @@ package com.example.contacts
 import android.app.Application
 import androidx.room.Room
 import com.example.contacts.data.ContactsDatabase
+import com.example.contacts.data.ContactsRepository
 
 class ContactsApp : Application() {
 

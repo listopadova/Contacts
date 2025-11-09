@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.presentation.addNewContact
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.contacts.R
 import com.example.contacts.components.StyledButton
 import com.example.contacts.components.TextInput
 import com.example.contacts.ui.theme.ContactsTheme
@@ -33,7 +34,7 @@ private val spacerHeight = 16.dp
 @Composable
 fun AddNewContact(
     modifier: Modifier = Modifier,
-    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Factory)
+    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Companion.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current

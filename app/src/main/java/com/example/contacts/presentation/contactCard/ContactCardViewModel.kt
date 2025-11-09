@@ -1,11 +1,13 @@
-package com.example.contacts
+package com.example.contacts.presentation.contactCard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.contacts.ContactsApp
+import com.example.contacts.data.ContactsRepository
+import com.example.contacts.presentation.contactsList.ContactsListItemState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -15,7 +17,8 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val repository = (this[APPLICATION_KEY] as ContactsApp).repository
+                val repository =
+                    (this[ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY] as ContactsApp).repository
                 ContactCardViewModel(repository)
             }
         }
@@ -31,7 +34,7 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
             )
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
+            started = SharingStarted.Companion.WhileSubscribed(),
             initialValue = ContactsListItemState()
         )
     }

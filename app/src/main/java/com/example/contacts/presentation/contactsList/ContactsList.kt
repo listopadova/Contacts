@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.presentation.contactsList
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.contacts.R
 import com.example.contacts.ui.theme.ContactsTheme
 
 private val borderWidth = 1.dp
@@ -28,7 +29,7 @@ private val cardPadding = 8.dp
 @Composable
 fun ContactsList(
     modifier: Modifier = Modifier,
-    viewModel: ContactsListViewModel = viewModel(factory = ContactsListViewModel.Factory),
+    viewModel: ContactsListViewModel = viewModel(factory = ContactsListViewModel.Companion.Factory),
     onNavigateToContactCard: (contact: Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

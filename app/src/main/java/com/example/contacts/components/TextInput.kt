@@ -46,7 +46,7 @@ fun TextInput(
             text = label,
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier.padding(start = padding)
+            modifier = modifier.padding(start = padding)
         )
         val interactionSource = remember { MutableInteractionSource() }
         val colors = TextFieldDefaults.colors(
@@ -60,7 +60,7 @@ fun TextInput(
             keyboardOptions = keyboardOptions,
             textStyle = MaterialTheme.typography.bodyLarge,
             interactionSource = interactionSource,
-            modifier = modifier
+            modifier = Modifier
                 .padding(padding)
                 .fillMaxWidth(),
             decorationBox = { innerTextField ->
@@ -82,7 +82,7 @@ fun TextInput(
                                 animationSpec = tween(durationMillis = TextFieldAnimationDuration),
                             )
                         Box(
-                            modifier
+                            Modifier
                                 .clip(RoundedCornerShape(cornerRadius))
                                 .background(containerColor.value)
                         )

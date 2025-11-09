@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.presentation.contactCard
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -28,7 +28,7 @@ private val contactIconSize = 80.dp
 @Composable
 fun ContactCard(
     modifier: Modifier = Modifier,
-    viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel .Factory),
+    viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel.Companion.Factory),
     contactId: Int
 ) {
     val contact = viewModel.getContact(contactId).collectAsStateWithLifecycle()

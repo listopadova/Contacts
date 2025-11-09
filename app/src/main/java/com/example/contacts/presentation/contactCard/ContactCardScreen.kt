@@ -1,4 +1,4 @@
-package com.example.contacts
+package com.example.contacts.presentation.contactCard
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

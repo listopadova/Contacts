@@ -6,6 +6,7 @@
     <string name="add_contact__text_field_label__name">Имя</string>
     <string name="add_contact__text_field_label__surname">Фамилия</string>
     <string name="add_contact__text_field_label__phone">Телефон</string>
+    <string name="add_contact__text_field_label__email">Электронная почта</string>
     <string name="add_contact__text_field_label__empty_name_error">Имя не может быть пустым</string>
     <string name="add_contact__text_field_label__empty_surname_error">Фамилия не может быть пустой</string>
     <string name="add_contact__text_field_label__empty_phone_error">Телефон не может быть пустым</string>

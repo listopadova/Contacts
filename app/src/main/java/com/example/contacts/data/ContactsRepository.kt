@@ -14,7 +14,8 @@ class ContactsRepository(
                 id = contact.id,
                 name = contact.name,
                 surname = contact.surname,
-                phone = contact.phone
+                phone = contact.phone,
+                email = contact.email
             )
         }
 }
@@ -24,7 +25,8 @@ class ContactsRepository(
             id = ObjectsCompat.hashCode(contact.name + contact.surname + contact.phone),
             name = contact.name,
             surname = contact.surname,
-            phone = contact.phone
+            phone = contact.phone,
+            email = contact.email
         ))
     }
 
@@ -41,5 +43,6 @@ data class Contact (
     val id: Int = -1,
     val name: String,
     val surname: String,
-    val phone: String
+    val phone: String,
+    val email: String? = null
 )

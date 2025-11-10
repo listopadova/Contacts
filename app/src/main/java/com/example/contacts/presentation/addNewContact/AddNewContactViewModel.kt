@@ -54,6 +54,14 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
             )
         }
     }
+
+    fun updateEmail(email: String) {
+        _uiState.update {
+            it.copy(
+                email = email
+            )
+        }
+    }
     fun addContact() {
         _uiState.update {
             it.copy(
@@ -69,7 +77,8 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
             val contact = Contact(
                 name = _uiState.value.name,
                 surname = _uiState.value.surname,
-                phone = _uiState.value.phone
+                phone = _uiState.value.phone,
+                email = _uiState.value.email
             )
             viewModelScope.launch(Dispatchers.IO) {
                 repository.addContact(contact)
@@ -79,7 +88,8 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
                 it.copy(
                     name = "",
                     surname = "",
-                    phone = ""
+                    phone = "",
+                    email = ""
                 )
             }
         }
@@ -91,6 +101,7 @@ data class AddNewContactState(
     val name: String = "",
     val surname: String = "",
     val phone: String = "",
+    val email: String = "",
     val isEmptyNameError: Boolean = false,
     val isEmptySurnameError: Boolean = false,
     val isEmptyPhoneError: Boolean = false

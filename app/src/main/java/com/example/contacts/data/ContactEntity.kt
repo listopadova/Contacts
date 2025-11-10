@@ -9,5 +9,6 @@ data class ContactEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "surname") val surname: String,
-    @ColumnInfo(name = "phone") val phone: String
+    @ColumnInfo(name = "phone") val phone: String,
+    @ColumnInfo(name = "email") val email: String?
 )

@@ -1,16 +1,12 @@
 package com.example.contacts.presentation.addNewContact
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,9 +23,10 @@ import com.example.contacts.components.StyledButton
 import com.example.contacts.components.TextInput
 import com.example.contacts.ui.theme.ContactsTheme
 
-private val borderWidth = 1.dp
 private val cardPadding = 8.dp
-private val spacerHeight = 16.dp
+private val spacerHeight = 12.dp
+private val buttonPadding = 12.dp
+private val buttonHeight = 48.dp
 
 @Composable
 fun AddNewContact(
@@ -39,66 +36,70 @@ fun AddNewContact(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 
-    OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-        border = BorderStroke(borderWidth, MaterialTheme.colorScheme.primary),
+    Column(
         modifier = modifier
             .padding(cardPadding)
             .fillMaxWidth()
 
     ) {
-        Spacer(modifier = Modifier.height(spacerHeight))
+        Column {
+            Spacer(modifier = Modifier.height(spacerHeight))
 
-        Text(
-            stringResource(R.string.add_contact__title),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
+            TextInput(
+                label = stringResource(R.string.add_contact__text_field_label__name),
+                text = uiState.name,
+                supportingText = if (uiState.isEmptyNameError)
+                    stringResource(R.string.add_contact__text_field_label__empty_name_error) else null,
+                isError = uiState.isEmptyNameError,
+                updateValue = viewModel::updateName
+            )
+            TextInput(
+                label = stringResource(R.string.add_contact__text_field_label__surname),
+                text = uiState.surname,
+                supportingText = if (uiState.isEmptySurnameError)
+                    stringResource(R.string.add_contact__text_field_label__empty_surname_error) else null,
+                isError = uiState.isEmptySurnameError,
+                updateValue = viewModel::updateSurname
+            )
+            TextInput(
+                label = stringResource(R.string.add_contact__text_field_label__phone),
+                text = uiState.phone,
+                supportingText = if (uiState.isEmptyPhoneError)
+                    stringResource(R.string.add_contact__text_field_label__empty_phone_error) else null,
+                isError = uiState.isEmptyPhoneError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                updateValue = viewModel::updatePhone
+            )
+            TextInput(
+                label = stringResource(R.string.add_contact__text_field_label__email),
+                text = uiState.email,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                updateValue = viewModel::updateEmail
+            )
+        }
 
-        TextInput(
-            label = stringResource(R.string.add_contact__text_field_label__name),
-            text = uiState.name,
-            supportingText = if (uiState.isEmptyNameError)
-                stringResource(R.string.add_contact__text_field_label__empty_name_error) else null,
-            isError = uiState.isEmptyNameError,
-            updateValue = viewModel::updateName
-        )
-        TextInput(
-            label = stringResource(R.string.add_contact__text_field_label__surname),
-            text = uiState.surname,
-            supportingText = if (uiState.isEmptySurnameError)
-                stringResource(R.string.add_contact__text_field_label__empty_surname_error) else null,
-            isError = uiState.isEmptySurnameError,
-            updateValue = viewModel::updateSurname
-        )
-        TextInput(
-            label = stringResource(R.string.add_contact__text_field_label__phone),
-            text = uiState.phone,
-            supportingText = if (uiState.isEmptyPhoneError)
-                stringResource(R.string.add_contact__text_field_label__empty_phone_error) else null,
-            isError = uiState.isEmptyPhoneError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            updateValue = viewModel::updatePhone
-        )
-
+        Spacer(Modifier.weight(1F))
         StyledButton(
             onClick = {
                 focusManager.clearFocus()
                 viewModel.addContact()
             },
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .padding(buttonPadding)
+                .height(buttonHeight),
+            cornerRadius = buttonHeight / 2,
             text = stringResource(R.string.add_contact__button_title)
         )
-
-        Spacer(modifier = Modifier.height(spacerHeight))
     }
 }
 
 @Preview(showBackground = true)
 @Preview(
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES)
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun AddNewContactPreview() {
     ContactsTheme {

@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.contacts.ui.theme.ContactsTheme
 
-private val padding = 6.dp
+private val padding = 4.dp
 private val cornerRadius = 10.dp
 private val TextFieldAnimationDuration = 150
 

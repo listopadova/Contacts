@@ -31,7 +31,10 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
         if (contactItems.isEmpty()) {
             ContactsListState.Empty
         } else {
-            ContactsListState.Items(contactItems)
+            val groupedContacts: Map<String, List<ContactsListItemState>> = contactItems
+                .sortedBy { it.surname }
+                .groupBy { it.surname[0].toString().uppercase() }
+            ContactsListState.Items(groupedContacts)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -57,7 +60,7 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
 }
 sealed class ContactsListState {
     data object Empty: ContactsListState()
-    data class Items(val contactItems: List<ContactsListItemState>): ContactsListState()
+    data class Items(val contactItems: Map<String, List<ContactsListItemState>>): ContactsListState()
 }
 
 data class ContactsListItemState(

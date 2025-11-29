@@ -1,5 +1,7 @@
 package com.example.contacts.presentation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -34,10 +36,10 @@ fun BaseScreen(
     modifier: Modifier = Modifier,
 ) {
     val navController: NavHostController = rememberNavController()
-    var backEnabled by remember { mutableStateOf(false) }
+    var isMainScreen by remember { mutableStateOf(false) }
 
     navController.addOnDestinationChangedListener { controller, destination, arguments ->
-        backEnabled = destination.parent != null
+        isMainScreen = destination.parent?.startDestinationRoute != destination.route
     }
 
     ContactsTheme {
@@ -46,7 +48,7 @@ fun BaseScreen(
                 TopAppBar(
                     title = { Text("Contacts") },
                     navigationIcon = {
-                        if (backEnabled) {
+                        if (isMainScreen) {
                             IconButton(onClick = { navController.popBackStack() }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -87,14 +89,19 @@ fun BaseScreen(
             },
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { navController.navigateToAddContactScreen() }
+                AnimatedVisibility(
+                    visible = !isMainScreen,
+                    enter = fadeIn()
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.add_24),
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = ""
-                    )
+                    FloatingActionButton(
+                        onClick = { navController.navigateToAddContactScreen() }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.add_24),
+                            tint = MaterialTheme.colorScheme.primary,
+                            contentDescription = ""
+                        )
+                    }
                 }
             },
             modifier = Modifier.fillMaxSize()

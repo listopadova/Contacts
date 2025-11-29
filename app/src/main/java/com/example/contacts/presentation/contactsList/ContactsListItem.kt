@@ -8,16 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.contacts.R
-import com.example.contacts.components.StyledButton
 
 private val contactIconSize = 48.dp
 private val padding = 8.dp
@@ -26,7 +28,7 @@ private val padding = 8.dp
 fun ContactsListItem(
     modifier: Modifier = Modifier,
     uiState: ContactsListItemState,
-    onDeleteClick: () -> Unit
+    onClick: () -> Unit
 ) {
     Row(modifier
         .fillMaxWidth()
@@ -53,9 +55,13 @@ fun ContactsListItem(
 
         Spacer(Modifier.weight(1F))
 
-        StyledButton(
-            onClick = onDeleteClick,
-            text = stringResource(R.string.delete_contact_button_title)
-        )
+        IconButton(onClick = onClick) {
+            Icon(
+                painter = painterResource(R.drawable.favourite_24),
+                tint = if (uiState.isFavourite) MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.primary,
+                contentDescription = ""
+            )
+        }
     }
 }

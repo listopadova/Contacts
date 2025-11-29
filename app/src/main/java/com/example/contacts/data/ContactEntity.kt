@@ -10,5 +10,6 @@ data class ContactEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "surname") val surname: String,
     @ColumnInfo(name = "phone") val phone: String,
-    @ColumnInfo(name = "email") val email: String?
+    @ColumnInfo(name = "email") val email: String?,
+    @ColumnInfo(name = "isFavourite") val isFavourite: Boolean
 )

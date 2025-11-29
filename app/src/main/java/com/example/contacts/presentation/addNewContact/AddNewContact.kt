@@ -83,6 +83,7 @@ fun AddNewContact(
             onClick = {
                 focusManager.clearFocus()
                 viewModel.addContact()
+                // TODO: go back to the list
             },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

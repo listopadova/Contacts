@@ -48,13 +48,20 @@ class ContactsListViewModel(private val repository: ContactsRepository): ViewMod
                 id = repoContact.id,
                 name = repoContact.name,
                 surname = repoContact.surname,
-                phone = repoContact.phone
+                phone = repoContact.phone,
+                isFavourite = repoContact.isFavourite
             ) }
     }
 
     fun delete(item: ContactsListItemState) {
         viewModelScope.launch(Dispatchers.IO){
             repository.deleteContact(item.id)
+        }
+    }
+
+    fun switchFavourite(item: ContactsListItemState) {
+        viewModelScope.launch(Dispatchers.IO){
+            repository.switchFavourite(item.id)
         }
     }
 }
@@ -67,7 +74,8 @@ data class ContactsListItemState(
     val id: Int = -1,
     val name: String = "",
     val surname: String = "",
-    val phone: String = ""
+    val phone: String = "",
+    val isFavourite: Boolean = false
 ) {
     val initials: String
         get() = (name.take(1) + surname.take(1)).uppercase()

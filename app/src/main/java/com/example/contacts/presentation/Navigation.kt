@@ -12,6 +12,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 object ContactsList
 @Serializable
+object FavouriteContactsList
+@Serializable
 data class ContactDetails(val contactId: Int)
 @Serializable
 object AddContact
@@ -24,6 +26,13 @@ fun NavGraphBuilder.contactsListScreen(onNavigateToContactCard: (contact: Int) -
     }
 }
 
+fun NavGraphBuilder.favouritesContactsListScreen(onNavigateToContactCard: (contact: Int) -> Unit) {
+    composable<FavouriteContactsList> {
+        // TODO: replace with favorites
+        ContactsScreen(onNavigateToContactCard = onNavigateToContactCard)
+    }
+}
+
 fun NavGraphBuilder.contactCardScreen() {
     composable<ContactDetails> { backStackEntry ->
         val contact: ContactDetails = backStackEntry.toRoute()
@@ -32,7 +41,15 @@ fun NavGraphBuilder.contactCardScreen() {
 }
 
 fun NavGraphBuilder.addContactScreen() {
+    composable<AddContact> {
+        AddNewContact()
+    }
+}
+
+fun NavGraphBuilder.editContactScreen() {
     composable<AddContact> { backStackEntry ->
+        val contact: EditContact = backStackEntry.toRoute()
+        // TODO: replace with edit screen
         AddNewContact()
     }
 }
@@ -43,4 +60,8 @@ fun NavController.navigateToContactCard(id: Int) {
 
 fun NavController.navigateToAddContactScreen() {
     navigate(route = AddContact)
+}
+
+fun NavController.navigateToEditContact(id: Int) {
+    navigate(route = EditContact(id))
 }

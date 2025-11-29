@@ -16,8 +16,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.contacts.R
@@ -28,7 +33,12 @@ import com.example.contacts.ui.theme.ContactsTheme
 fun BaseScreen(
     modifier: Modifier = Modifier,
 ) {
-    val navController = rememberNavController()
+    val navController: NavHostController = rememberNavController()
+    var backEnabled by remember { mutableStateOf(false) }
+
+    navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        backEnabled = destination.parent != null
+    }
 
     ContactsTheme {
         Scaffold(
@@ -36,7 +46,7 @@ fun BaseScreen(
                 TopAppBar(
                     title = { Text("Contacts") },
                     navigationIcon = {
-                        if (navController.previousBackStackEntry != null) {
+                        if (backEnabled) {
                             IconButton(onClick = { navController.popBackStack() }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,

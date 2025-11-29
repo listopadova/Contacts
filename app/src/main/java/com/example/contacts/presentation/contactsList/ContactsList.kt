@@ -49,7 +49,7 @@ fun ContactsList(
                                 modifier = Modifier.clickable { onNavigateToContactCard(contact.id) },
                                 uiState = contact
                             ) {
-                                viewModel.delete(contact)
+                                viewModel.switchFavourite(contact)
                             }
                         }
                     }

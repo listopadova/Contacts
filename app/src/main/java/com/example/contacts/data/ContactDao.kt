@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 interface ContactDao {
     @Query("SELECT * FROM contacts")
     fun getAll(): Flow<List<ContactEntity>>
+    @Query("SELECT * FROM contacts WHERE isFavourite = 1")
+    fun getFavourites(): Flow<List<ContactEntity>>
     @Query("SELECT * FROM contacts WHERE id = :contactId")
     fun getContact(contactId: Int): Flow<ContactEntity>
     @Insert

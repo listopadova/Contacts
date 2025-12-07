@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Contacts</string>
+    <string name="app_name">Контакты</string>
+    <string name="contacts__tab">Контакты</string>
+    <string name="favourites__tab">Избранные</string>
     <string name="add_contact__title">Добавить новый контакт</string>
     <string name="add_contact__button_title">Добавить</string>
     <string name="add_contact__text_field_label__name">Имя</string>

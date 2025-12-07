@@ -19,11 +19,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -35,9 +38,12 @@ import com.example.contacts.ui.theme.ContactsTheme
 fun BaseScreen(
     modifier: Modifier = Modifier,
 ) {
+    val tabs = getTabs()
     val navController: NavHostController = rememberNavController()
     var isMainScreen by remember { mutableStateOf(false) }
-
+    var selectedDestinationIndex: Int by remember {
+        mutableIntStateOf(0)
+    }
     navController.addOnDestinationChangedListener { controller, destination, arguments ->
         isMainScreen = destination.parent?.startDestinationRoute != destination.route
     }
@@ -61,30 +67,26 @@ fun BaseScreen(
             },
             bottomBar = {
                 NavigationBar {
-                    NavigationBarItem(
-                        selected = true,
-                        onClick = {},
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.person_24),
-                                tint = MaterialTheme.colorScheme.primary,
-                                contentDescription = ""
-                            )
-                        },
-                        label = { Text("Contacts") }
-                    )
-                    NavigationBarItem(
-                        selected = false,
-                        onClick = {},
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.favourite_24),
-                                tint = MaterialTheme.colorScheme.primary,
-                                contentDescription = ""
-                            )
-                        },
-                        label = { Text("Favourites") }
-                    )
+                    tabs.forEachIndexed { index, destination ->
+                        NavigationBarItem(
+                            selected = selectedDestinationIndex == index,
+                            onClick = {
+                                navController.navigate(route = destination.route) {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                                selectedDestinationIndex = index
+                            },
+                            icon = {
+                                Icon(
+                                    painter = destination.icon,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    contentDescription = ""
+                                )
+                            },
+                            label = { Text(destination.title) }
+                        )
+                    }
                 }
             },
             floatingActionButtonPosition = FabPosition.End,
@@ -116,9 +118,35 @@ fun BaseScreen(
                 contactsListScreen(onNavigateToContactCard = { contactId ->
                     navController.navigateToContactCard(contactId)
                 })
+                favouritesContactsListScreen(onNavigateToContactCard = { contactId ->
+                    navController.navigateToContactCard(contactId)
+                })
                 contactCardScreen()
                 addContactScreen()
             }
         }
     }
 }
+
+@Composable
+private fun getTabs(): List<TabDestination> {
+    return listOf(
+        TabDestination(
+            icon = painterResource(R.drawable.person_24),
+            title = stringResource(R.string.contacts__tab),
+            route = ContactsList
+        ),
+        TabDestination(
+            icon = painterResource(R.drawable.favourite_24),
+            title = stringResource(R.string.favourites__tab),
+            route = FavouriteContactsList
+        )
+    )
+}
+
+private data class TabDestination(
+    val icon: Painter,
+    val title: String,
+    val route: Any
+)
+

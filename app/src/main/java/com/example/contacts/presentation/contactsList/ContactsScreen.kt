@@ -1,5 +1,6 @@
 package com.example.contacts.presentation.contactsList
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -10,7 +11,9 @@ fun ContactsScreen(
     modifier: Modifier = Modifier,
     onNavigateToContactCard: (contact: Int) -> Unit
 ) {
-
-    ContactsList(modifier = modifier, onNavigateToContactCard = onNavigateToContactCard)
-
-}
+        ContactsList(
+            modifier = modifier
+                .fillMaxSize(),
+            onNavigateToContactCard = onNavigateToContactCard
+        )
+    }

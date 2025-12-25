@@ -7,7 +7,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.contacts.ContactsApp
 import com.example.contacts.data.ContactsRepository
-import com.example.contacts.presentation.contactsList.ContactsListItemState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -24,19 +23,35 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
         }
     }
 
-    fun getContact(id: Int): StateFlow<ContactsListItemState> {
+    fun getContact(id: Int): StateFlow<ContactCardState> {
         return repository.getContact(id).map { contact ->
-            ContactsListItemState(
+            ContactCardState(
                 id = contact.id,
                 name = contact.name,
                 surname = contact.surname,
-                phone = contact.phone
+                phone = contact.phone,
+                email = contact.email,
+                isFavourite = contact.isFavourite
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.Companion.WhileSubscribed(),
-            initialValue = ContactsListItemState()
+            initialValue = ContactCardState()
         )
     }
 
+}
+
+data class ContactCardState(
+    val id: Int = -1,
+    val name: String = "",
+    val surname: String = "",
+    val phone: String = "",
+    val email: String? = null,
+    val isFavourite: Boolean = false
+) {
+    val initials: String
+        get() = (name.take(1) + surname.take(1)).uppercase()
+    val fullName: String
+        get() = "$name $surname"
 }

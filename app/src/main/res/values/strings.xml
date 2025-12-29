@@ -2,6 +2,8 @@
     <string name="app_name">Contacts</string>
     <string name="contacts__tab">Contacts</string>
     <string name="favourites__tab">Favourites</string>
+    <string name="contacts__title">Contacts</string>
+    <string name="contact__title">Contact</string>
     <string name="add_contact__title">Add new contact</string>
     <string name="add_contact__button_title">Add</string>
     <string name="add_contact__text_field_label__name">Name</string>

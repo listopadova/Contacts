@@ -13,73 +13,79 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object ContactsList
+
 @Serializable
 object FavouriteContactsList
+
 @Serializable
 data class ContactDetails(val contactId: Int)
+
 @Serializable
 object AddContact
+
 @Serializable
 data class EditContact(val contactId: Int)
+
 @Serializable
 object ContactsTab
+
 @Serializable
 object FavouritesTab
 
 fun NavGraphBuilder.contactsTab() {
     composable<ContactsTab> {
         val contactsNavController = rememberNavController()
-        TabRootScreen(
+        NavHost(
             navController = contactsNavController,
-            title = "Contacts"
-        ) { modifier ->
-            NavHost(
-                navController = contactsNavController,
-                startDestination = ContactsList,
-                modifier = modifier
-            ) {
-                contactsListScreen(
-                    onNavigateToContactCard = { contactId ->
-                        contactsNavController.navigateToContactCard(contactId)
-                    }
-                )
-                contactCardScreen()
-                addContactScreen()
-                editContactScreen()
-            }
+            startDestination = ContactsList
+        ) {
+            contactsListScreen(
+                onNavigateToContactCard = { contactId ->
+                    contactsNavController.navigateToContactCard(contactId)
+                },
+                onAddContactClick = {
+                    contactsNavController.navigateToAddContactScreen()
+                }
+            )
+            contactCardScreen(
+                onBackButtonClick = { contactsNavController.popBackStack() }
+            )
+            addContactScreen(
+                onBackButtonClick = { contactsNavController.popBackStack() },
+                // TODO: nav to contact card
+                onAddContactClick = { contactsNavController.popBackStack() }
+            )
+            editContactScreen()
         }
     }
 }
 
 fun NavGraphBuilder.favouritesTab() {
-    composable< FavouritesTab> {
+    composable<FavouritesTab> {
         val favouritesNavController = rememberNavController()
-        TabRootScreen(
+        NavHost(
             navController = favouritesNavController,
-            title = "Favourites"
-        ) { modifier ->
-            NavHost(
-                navController = favouritesNavController,
-                startDestination = FavouriteContactsList,
-                modifier = modifier
-            ) {
-                favouritesContactsListScreen(onNavigateToContactCard = { contactId ->
-                    favouritesNavController.navigateToContactCard(contactId)
-                })
-                contactCardScreen()
-                addContactScreen()
-                editContactScreen()
-            }
+            startDestination = FavouriteContactsList
+        ) {
+            favouritesContactsListScreen(onNavigateToContactCard = { contactId ->
+                favouritesNavController.navigateToContactCard(contactId)
+            })
+            contactCardScreen(
+                onBackButtonClick = { favouritesNavController.popBackStack() }
+            )
+            editContactScreen()
         }
     }
 }
 
 fun NavGraphBuilder.contactsListScreen(
-    onNavigateToContactCard: (contact: Int) -> Unit
+    onNavigateToContactCard: (contact: Int) -> Unit,
+    onAddContactClick: () -> Unit
 ) {
     composable<ContactsList> {
         ContactsScreen(
-            onNavigateToContactCard = onNavigateToContactCard
+            onNavigateToContactCard = onNavigateToContactCard,
+            onAddContactClick = onAddContactClick
         )
     }
 }
@@ -90,16 +96,27 @@ fun NavGraphBuilder.favouritesContactsListScreen(onNavigateToContactCard: (conta
     }
 }
 
-fun NavGraphBuilder.contactCardScreen() {
+fun NavGraphBuilder.contactCardScreen(
+    onBackButtonClick: () -> Unit
+) {
     composable<ContactDetails> { backStackEntry ->
         val contact: ContactDetails = backStackEntry.toRoute()
-        ContactCardScreen(contact.contactId)
+        ContactCardScreen(
+            contact.contactId,
+            onBackButtonClick = onBackButtonClick
+        )
     }
 }
 
-fun NavGraphBuilder.addContactScreen() {
+fun NavGraphBuilder.addContactScreen(
+    onBackButtonClick: () -> Unit,
+    onAddContactClick: () -> Unit
+) {
     composable<AddContact> {
-        AddNewContact()
+        AddNewContact(
+            onBackButtonClick = onBackButtonClick,
+            onAddContactClick = onAddContactClick
+        )
     }
 }
 

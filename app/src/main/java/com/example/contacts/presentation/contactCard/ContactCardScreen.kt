@@ -5,9 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ContactCardScreen(contactId: Int) {
+fun ContactCardScreen(
+    contactId: Int,
+    onBackButtonClick: () -> Unit
+) {
     ContactCard(
         modifier = Modifier.fillMaxSize(),
-        contactId = contactId
+        contactId = contactId,
+        onBackButtonClick = onBackButtonClick
     )
 }

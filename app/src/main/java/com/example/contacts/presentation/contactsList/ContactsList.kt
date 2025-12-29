@@ -32,30 +32,31 @@ fun ContactsList(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        when(val state = uiState) {
-            is ContactsListState.Empty -> Image(
-                painter = painterResource(R.drawable.contacts_empty_state),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier.fillMaxWidth()
-            )
-            is ContactsListState.Items -> {
-                LazyColumn {
-                    state.contactItems.forEach { initial, contacts ->
-                        stickyHeader { Header(initial) }
+    when (val state = uiState) {
+        is ContactsListState.Empty -> Image(
+            painter = painterResource(R.drawable.contacts_empty_state),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
+        )
 
-                        items(contacts) { contact ->
-                            ContactsListItem(
-                                modifier = Modifier.clickable { onNavigateToContactCard(contact.id) },
-                                uiState = contact
-                            ) {
-                                viewModel.switchFavourite(contact)
-                            }
+        is ContactsListState.Items -> {
+            LazyColumn(modifier = modifier) {
+                state.contactItems.forEach { initial, contacts ->
+                    stickyHeader { Header(initial) }
+
+                    items(contacts) { contact ->
+                        ContactsListItem(
+                            modifier = Modifier.clickable { onNavigateToContactCard(contact.id) },
+                            uiState = contact
+                        ) {
+                            viewModel.switchFavourite(contact)
                         }
                     }
                 }
             }
         }
+    }
 
 }
 
@@ -75,7 +76,8 @@ fun Header(text: String) {
 @Preview(showBackground = true)
 @Preview(
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES)
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun ContactsListPreview() {
     ContactsTheme {

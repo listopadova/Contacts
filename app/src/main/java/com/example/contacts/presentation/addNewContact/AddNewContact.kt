@@ -3,10 +3,19 @@ package com.example.contacts.presentation.addNewContact
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,71 +37,92 @@ private val spacerHeight = 12.dp
 private val buttonPadding = 12.dp
 private val buttonHeight = 48.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNewContact(
     modifier: Modifier = Modifier,
-    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Companion.Factory)
+    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Companion.Factory),
+    onBackButtonClick: () -> Unit,
+    onAddContactClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
-
-    Column(
-        modifier = modifier
-            .padding(cardPadding)
-            .fillMaxWidth()
-
-    ) {
-        Column {
-            Spacer(modifier = Modifier.height(spacerHeight))
-
-            TextInput(
-                label = stringResource(R.string.add_contact__text_field_label__name),
-                text = uiState.name,
-                supportingText = if (uiState.isEmptyNameError)
-                    stringResource(R.string.add_contact__text_field_label__empty_name_error) else null,
-                isError = uiState.isEmptyNameError,
-                updateValue = viewModel::updateName
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.add_contact__title)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackButtonClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back button"
+                        )
+                    }
+                },
             )
-            TextInput(
-                label = stringResource(R.string.add_contact__text_field_label__surname),
-                text = uiState.surname,
-                supportingText = if (uiState.isEmptySurnameError)
-                    stringResource(R.string.add_contact__text_field_label__empty_surname_error) else null,
-                isError = uiState.isEmptySurnameError,
-                updateValue = viewModel::updateSurname
-            )
-            TextInput(
-                label = stringResource(R.string.add_contact__text_field_label__phone),
-                text = uiState.phone,
-                supportingText = if (uiState.isEmptyPhoneError)
-                    stringResource(R.string.add_contact__text_field_label__empty_phone_error) else null,
-                isError = uiState.isEmptyPhoneError,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                updateValue = viewModel::updatePhone
-            )
-            TextInput(
-                label = stringResource(R.string.add_contact__text_field_label__email),
-                text = uiState.email,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                updateValue = viewModel::updateEmail
+        },
+        modifier = modifier.fillMaxSize()
+    ) { innerPadding ->
+        Column(
+            modifier = modifier
+                .padding(innerPadding)
+                .padding(cardPadding)
+                .fillMaxWidth()
+
+        ) {
+            Column {
+                Spacer(modifier = Modifier.height(spacerHeight))
+
+                TextInput(
+                    label = stringResource(R.string.add_contact__text_field_label__name),
+                    text = uiState.name,
+                    supportingText = if (uiState.isEmptyNameError)
+                        stringResource(R.string.add_contact__text_field_label__empty_name_error) else null,
+                    isError = uiState.isEmptyNameError,
+                    updateValue = viewModel::updateName
+                )
+                TextInput(
+                    label = stringResource(R.string.add_contact__text_field_label__surname),
+                    text = uiState.surname,
+                    supportingText = if (uiState.isEmptySurnameError)
+                        stringResource(R.string.add_contact__text_field_label__empty_surname_error) else null,
+                    isError = uiState.isEmptySurnameError,
+                    updateValue = viewModel::updateSurname
+                )
+                TextInput(
+                    label = stringResource(R.string.add_contact__text_field_label__phone),
+                    text = uiState.phone,
+                    supportingText = if (uiState.isEmptyPhoneError)
+                        stringResource(R.string.add_contact__text_field_label__empty_phone_error) else null,
+                    isError = uiState.isEmptyPhoneError,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    updateValue = viewModel::updatePhone
+                )
+                TextInput(
+                    label = stringResource(R.string.add_contact__text_field_label__email),
+                    text = uiState.email,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    updateValue = viewModel::updateEmail
+                )
+            }
+
+            Spacer(Modifier.weight(1F))
+            StyledButton(
+                onClick = {
+                    focusManager.clearFocus()
+                    viewModel.addContact()
+                    // TODO: go back only if contact was added
+                    onAddContactClick()
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(buttonPadding)
+                    .height(buttonHeight),
+                cornerRadius = buttonHeight / 2,
+                text = stringResource(R.string.add_contact__button_title)
             )
         }
-
-        Spacer(Modifier.weight(1F))
-        StyledButton(
-            onClick = {
-                focusManager.clearFocus()
-                viewModel.addContact()
-                // TODO: go back to the list
-            },
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(buttonPadding)
-                .height(buttonHeight),
-            cornerRadius = buttonHeight / 2,
-            text = stringResource(R.string.add_contact__button_title)
-        )
     }
 }
 
@@ -104,6 +134,9 @@ fun AddNewContact(
 @Composable
 fun AddNewContactPreview() {
     ContactsTheme {
-        AddNewContact()
+        AddNewContact(
+            onBackButtonClick = {},
+            onAddContactClick = {}
+        )
     }
 }

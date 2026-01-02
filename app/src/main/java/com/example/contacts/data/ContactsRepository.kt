@@ -38,10 +38,11 @@ class ContactsRepository(
         }
 
 
-    fun addContact(contact: Contact) {
+    fun addContact(contact: Contact): Int {
+        val contactId = ObjectsCompat.hashCode(contact.name + contact.surname + contact.phone)
         contactDao.insertContact(
             ContactEntity(
-                id = ObjectsCompat.hashCode(contact.name + contact.surname + contact.phone),
+                id = contactId,
                 name = contact.name,
                 surname = contact.surname,
                 phone = contact.phone,
@@ -49,6 +50,7 @@ class ContactsRepository(
                 isFavourite = contact.isFavourite
             )
         )
+        return contactId
     }
 
     fun deleteContact(id: Int) {

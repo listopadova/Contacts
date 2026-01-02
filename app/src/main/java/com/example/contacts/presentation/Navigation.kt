@@ -52,8 +52,10 @@ fun NavGraphBuilder.contactsTab() {
             )
             addContactScreen(
                 onBackButtonClick = { contactsNavController.popBackStack() },
-                // TODO: nav to contact card
-                onAddContactClick = { contactsNavController.popBackStack() }
+                onAddContactClick = { contactId ->
+                    contactsNavController.popBackStack()
+                    contactsNavController.navigateToContactCard(contactId)
+                }
             )
             editContactScreen()
         }
@@ -110,7 +112,7 @@ fun NavGraphBuilder.contactCardScreen(
 
 fun NavGraphBuilder.addContactScreen(
     onBackButtonClick: () -> Unit,
-    onAddContactClick: () -> Unit
+    onAddContactClick: (Int) -> Unit
 ) {
     composable<AddContact> {
         AddNewContact(

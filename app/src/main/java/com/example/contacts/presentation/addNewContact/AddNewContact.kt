@@ -43,7 +43,7 @@ fun AddNewContact(
     modifier: Modifier = Modifier,
     viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Companion.Factory),
     onBackButtonClick: () -> Unit,
-    onAddContactClick: () -> Unit
+    onAddContactClick: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -110,9 +110,9 @@ fun AddNewContact(
             StyledButton(
                 onClick = {
                     focusManager.clearFocus()
-                    viewModel.addContact()
-                    // TODO: go back only if contact was added
-                    onAddContactClick()
+                    viewModel.addContact { contactId ->
+                        onAddContactClick(contactId)
+                    }
                 },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)

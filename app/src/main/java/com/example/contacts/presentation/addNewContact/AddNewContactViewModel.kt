@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddNewContactViewModel(private val repository: ContactsRepository): ViewModel() {
     companion object {
@@ -62,7 +63,7 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
             )
         }
     }
-    fun addContact() {
+    fun addContact(callback: (Int) -> Unit) {
         _uiState.update {
             it.copy(
                 isEmptyNameError = it.name.isEmpty(),
@@ -81,16 +82,10 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
                 email = _uiState.value.email
             )
             viewModelScope.launch(Dispatchers.IO) {
-                repository.addContact(contact)
-            }
-
-            _uiState.update {
-                it.copy(
-                    name = "",
-                    surname = "",
-                    phone = "",
-                    email = ""
-                )
+                val contactId = repository.addContact(contact)
+                withContext(Dispatchers.Main) {
+                    callback(contactId)
+                }
             }
         }
     }

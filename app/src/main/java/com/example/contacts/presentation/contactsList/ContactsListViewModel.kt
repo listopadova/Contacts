@@ -26,7 +26,7 @@ enum class ListType {
 class ContactsListViewModel(
     private val repository: ContactsRepository,
     private val listType: ListType
-): ViewModel() {
+) : ViewModel() {
     companion object {
         val LIST_TYPE_KEY = object : CreationExtras.Key<ListType> {}
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -39,12 +39,13 @@ class ContactsListViewModel(
         }
     }
 
-    val flow: Flow<List<Contact>> get() {
-        return when(listType) {
-            ListType.ALL -> repository.flow
-            ListType.FAVOURITES -> repository.favouritesFlow
+    val flow: Flow<List<Contact>>
+        get() {
+            return when (listType) {
+                ListType.ALL -> repository.flow
+                ListType.FAVOURITES -> repository.favouritesFlow
+            }
         }
-    }
     val uiState: StateFlow<ContactsListState> = flow.map { repositoryContactList ->
         val contactItems: List<ContactsListItemState> = repositoryContactList.asViewModelContacts()
         if (contactItems.isEmpty()) {
@@ -69,24 +70,21 @@ class ContactsListViewModel(
                 surname = repoContact.surname,
                 phone = repoContact.phone,
                 isFavourite = repoContact.isFavourite
-            ) }
-    }
-
-    fun delete(item: ContactsListItemState) {
-        viewModelScope.launch(Dispatchers.IO){
-            repository.deleteContact(item.id)
+            )
         }
     }
 
     fun switchFavourite(item: ContactsListItemState) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repository.switchFavourite(item.id)
         }
     }
 }
+
 sealed class ContactsListState {
-    data object Empty: ContactsListState()
-    data class Items(val contactItems: Map<String, List<ContactsListItemState>>): ContactsListState()
+    data object Empty : ContactsListState()
+    data class Items(val contactItems: Map<String, List<ContactsListItemState>>) :
+        ContactsListState()
 }
 
 data class ContactsListItemState(

@@ -14,12 +14,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ContactCardViewModel(private val repository: ContactsRepository): ViewModel() {
+class ContactCardViewModel(private val repository: ContactsRepository) : ViewModel() {
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val repository =
-                    (this[ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY] as ContactsApp).repository
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as ContactsApp).repository
                 ContactCardViewModel(repository)
             }
         }
@@ -37,14 +37,20 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
             )
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Companion.WhileSubscribed(),
+            started = SharingStarted.WhileSubscribed(),
             initialValue = ContactCardState()
         )
     }
 
     fun switchFavourite(item: ContactCardState) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             repository.switchFavourite(item.id)
+        }
+    }
+
+    fun delete(item: ContactCardState) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteContact(item.id)
         }
     }
 

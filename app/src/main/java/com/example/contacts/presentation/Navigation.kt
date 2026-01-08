@@ -49,7 +49,10 @@ fun NavGraphBuilder.contactsTab() {
                 }
             )
             contactCardScreen(
-                onBackButtonClick = { contactsNavController.popBackStack() }
+                onBackButtonClick = { contactsNavController.popBackStack() },
+                onEditItemClick = { contactId ->
+                    contactsNavController.navigateToEditContact(contactId)
+                }
             )
             addContactScreen(
                 onBackButtonClick = { contactsNavController.popBackStack() },
@@ -74,7 +77,10 @@ fun NavGraphBuilder.favouritesTab() {
                 favouritesNavController.navigateToContactCard(contactId)
             })
             contactCardScreen(
-                onBackButtonClick = { favouritesNavController.popBackStack() }
+                onBackButtonClick = { favouritesNavController.popBackStack() },
+                onEditItemClick = { contactId ->
+                    favouritesNavController.navigateToEditContact(contactId)
+                }
             )
             editContactScreen()
         }
@@ -102,13 +108,15 @@ fun NavGraphBuilder.favouritesContactsListScreen(onNavigateToContactCard: (conta
 }
 
 fun NavGraphBuilder.contactCardScreen(
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onEditItemClick: (contact: Int) -> Unit
 ) {
     composable<ContactDetails> { backStackEntry ->
         val contact: ContactDetails = backStackEntry.toRoute()
         ContactCardScreen(
             contact.contactId,
-            onBackButtonClick = onBackButtonClick
+            onBackButtonClick = onBackButtonClick,
+            onEditItemClick = onEditItemClick
         )
     }
 }

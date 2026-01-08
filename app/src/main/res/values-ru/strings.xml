@@ -4,6 +4,7 @@
     <string name="contacts__tab">Контакты</string>
     <string name="favourites__tab">Избранные</string>
     <string name="contacts__title">Контакты</string>
+    <string name="favourites__title">Избранные</string>
     <string name="contact__title">Контакт</string>
     <string name="add_contact__title">Добавить новый контакт</string>
     <string name="add_contact__button_title">Добавить</string>

@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import com.example.contacts.presentation.addNewContact.AddNewContact
 import com.example.contacts.presentation.contactCard.ContactCardScreen
 import com.example.contacts.presentation.contactsList.ContactsScreen
+import com.example.contacts.presentation.contactsList.FavouriteContactsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -94,7 +95,9 @@ fun NavGraphBuilder.contactsListScreen(
 
 fun NavGraphBuilder.favouritesContactsListScreen(onNavigateToContactCard: (contact: Int) -> Unit) {
     composable<FavouriteContactsList> {
-        // TODO: add favourites
+        FavouriteContactsScreen(
+            onNavigateToContactCard = onNavigateToContactCard
+        )
     }
 }
 

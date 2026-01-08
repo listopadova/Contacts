@@ -7,10 +7,12 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.contacts.ContactsApp
 import com.example.contacts.data.ContactsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class ContactCardViewModel(private val repository: ContactsRepository): ViewModel() {
     companion object {
@@ -38,6 +40,12 @@ class ContactCardViewModel(private val repository: ContactsRepository): ViewMode
             started = SharingStarted.Companion.WhileSubscribed(),
             initialValue = ContactCardState()
         )
+    }
+
+    fun switchFavourite(item: ContactCardState) {
+        viewModelScope.launch(Dispatchers.IO){
+            repository.switchFavourite(item.id)
+        }
     }
 
 }

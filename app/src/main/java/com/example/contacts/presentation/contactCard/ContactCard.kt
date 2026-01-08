@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -27,7 +29,7 @@ private val spacer = 20.dp
 @Composable
 fun ContactCard(
     modifier: Modifier = Modifier,
-    viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel.Companion.Factory),
+    viewModel: ContactCardViewModel = viewModel(factory = ContactCardViewModel.Factory),
     contactId: Int,
     onBackButtonClick: () -> Unit
 ) {
@@ -44,6 +46,16 @@ fun ContactCard(
                         )
                     }
                 },
+                actions = {
+                    IconButton(onClick = { viewModel.switchFavourite(contact.value) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.FavoriteBorder,
+                            tint = if (contact.value.isFavourite) MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.primary,
+                            contentDescription = "Favourite"
+                        )
+                    }
+                }
             )
         },
         modifier = modifier.fillMaxSize()

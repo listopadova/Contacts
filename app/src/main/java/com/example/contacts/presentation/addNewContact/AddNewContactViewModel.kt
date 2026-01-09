@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AddNewContactViewModel(private val repository: ContactsRepository): ViewModel() {
+class AddNewContactViewModel(private val repository: ContactsRepository) : ViewModel() {
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -26,6 +26,7 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
             }
         }
     }
+
     private val _uiState = MutableStateFlow(AddNewContactState())
     val uiState: StateFlow<AddNewContactState> = _uiState.asStateFlow()
 
@@ -63,6 +64,7 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
             )
         }
     }
+
     fun addContact(callback: (Int) -> Unit) {
         _uiState.update {
             it.copy(
@@ -74,12 +76,13 @@ class AddNewContactViewModel(private val repository: ContactsRepository): ViewMo
 
         if (!_uiState.value.isEmptyNameError &&
             !_uiState.value.isEmptySurnameError &&
-            !_uiState.value.isEmptyPhoneError) {
+            !_uiState.value.isEmptyPhoneError
+        ) {
             val contact = Contact(
                 name = _uiState.value.name,
                 surname = _uiState.value.surname,
                 phone = _uiState.value.phone,
-                email = _uiState.value.email
+                email = if (_uiState.value.email.isNullOrEmpty()) null else _uiState.value.email
             )
             viewModelScope.launch(Dispatchers.IO) {
                 val contactId = repository.addContact(contact)
@@ -96,7 +99,7 @@ data class AddNewContactState(
     val name: String = "",
     val surname: String = "",
     val phone: String = "",
-    val email: String = "",
+    val email: String? = null,
     val isEmptyNameError: Boolean = false,
     val isEmptySurnameError: Boolean = false,
     val isEmptyPhoneError: Boolean = false

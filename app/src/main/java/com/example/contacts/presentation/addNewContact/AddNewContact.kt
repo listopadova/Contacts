@@ -41,7 +41,7 @@ private val buttonHeight = 48.dp
 @Composable
 fun AddNewContact(
     modifier: Modifier = Modifier,
-    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Companion.Factory),
+    viewModel: AddNewContactViewModel = viewModel(factory = AddNewContactViewModel.Factory),
     onBackButtonClick: () -> Unit,
     onAddContactClick: (Int) -> Unit
 ) {
@@ -100,7 +100,7 @@ fun AddNewContact(
                 )
                 TextInput(
                     label = stringResource(R.string.add_contact__text_field_label__email),
-                    text = uiState.email,
+                    text = uiState.email ?: "",
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     updateValue = viewModel::updateEmail
                 )
